@@ -21,7 +21,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -58,6 +61,11 @@ public class AppConfiguration {
 //        return provider;
 //    }
 @Bean
+public JdbcUserDetailsManager userDetailsService(DataSource dataSource) {
+    return new JdbcUserDetailsManager(dataSource);
+}
+
+@Bean
 public AuthenticationManager authenticationManager(
         UserDetailsService userDetailsService,
         PasswordEncoder passwordEncoder) {
@@ -67,21 +75,21 @@ public AuthenticationManager authenticationManager(
 
     return new ProviderManager(authenticationProvider);
 }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.withUsername("user")
-                .password(passwordEncoder().encode("123456")) // {noop} để không cần mã hóa mật khẩu
-                .roles("USER")
-                .build();
-
-        UserDetails admin = User.withUsername("admin")
-                .password(passwordEncoder().encode("123456"))
-                .roles("ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(user, admin);
-    }
+//
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        UserDetails user = User.withUsername("user")
+//                .password(passwordEncoder().encode("123456")) // {noop} để không cần mã hóa mật khẩu
+//                .roles("USER")
+//                .build();
+//
+//        UserDetails admin = User.withUsername("admin")
+//                .password(passwordEncoder().encode("123456"))
+//                .roles("ADMIN")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(user, admin);
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
