@@ -68,6 +68,11 @@
             color: white;
         }
 
+        .btn-logout {
+            background-color: red;
+            color: white;
+        }
+
         .btn:hover {
             transform: scale(1.1);
             opacity: 0.8;
@@ -80,6 +85,9 @@
 <div class="btn-container">
     <button class="btn btn-admin" onclick="window.location.href='http://localhost:8080/admin'">Admin</button>
     <button class="btn btn-user" onclick="window.location.href='http://localhost:8080/user'">User</button>
+    <form action="/logout" method="post">
+        <button class="btn btn-logout" type="submit">Logout</button>
+    </form>
 </div>
 </body>
 </html>
